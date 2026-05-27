@@ -10,16 +10,17 @@ The project is organized for easy deployment, exploration, and optimization in a
 
 - Oracle schema and data model for customers, products, orders, inventory, and sales
 - PL/SQL packages, procedures, and triggers for business logic and data consistency
-- Exported DDL for tables, views, packages, procedures, triggers, and materialized views
+- Exported DDL under `database/schema_ddl_export/` for tables, views, packages, procedures, triggers, and materialized views
+- Sample data generation scripts under `database/sample_data_generator/`
 - Analytics queries for revenue, customer, product, and inventory insights
 - Performance tutorials and examples for indexing, partitioning, and execution plans
 - Setup scripts for database deployment
 
 ## Repository Layout
 
-- `export/` — DDL exports for tables, views, procedures, packages, and triggers
 - `analytics/` — Business reporting and analysis SQL queries
-- `optimization/` — Performance tuning examples and demonstrations
+- `database/schema_ddl_export/` — Exported DDL for tables, views, procedures, packages, triggers, and materialized views
+- `database/sample_data_generator/` — SQL scripts for generating realistic sample sales and inventory data
 - `performance analysis/` — Additional SQL performance exploration scripts
 - `setup/` — Database deployment and schema setup scripts
 - `docs/` — Architecture notes and ER diagrams
@@ -81,7 +82,7 @@ See `analytics/business_analysis.sql` for business-focused queries, including:
 
 ## Performance Optimization
 
-Performance examples are available in `optimization/performance_demo.sql` and `performance analysis/`. The repository demonstrates:
+Performance examples are available in `performance analysis/`. The repository demonstrates:
 
 - Index design and composite indexing
 - Partition-aware queries
@@ -93,7 +94,7 @@ Performance examples are available in `optimization/performance_demo.sql` and `p
 
 - The project is intended as a learning and demonstration platform, not a production application.
 - Modify `setup/setup_project.sql` or the Docker command as needed for different passwords, ports, or environments.
-- Use `export/` scripts as a reference for Oracle DDL and schema generation.
+- Use `database/schema_ddl_export/` scripts as a reference for Oracle DDL and schema generation.
 
 ## Author
 
