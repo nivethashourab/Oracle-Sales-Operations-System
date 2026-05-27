@@ -4,8 +4,7 @@ AS
 BEGIN
     UPDATE sales_orders o
     SET total_amount = (
-        SELECT NVL(SUM(oi.quantity * oi.un
-it_price), 0)
+        SELECT NVL(SUM(oi.quantity * oi.unit_price), 0)
         FROM order_items oi
         WHERE oi.order_id = o.order_id
     );
