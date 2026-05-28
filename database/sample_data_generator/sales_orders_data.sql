@@ -1,29 +1,36 @@
 --- loads sales_orders table with 5000 rows of data
 
-INSERT INTO sales_orders (
-    order_id,
-    customer_id,
-    order_date,
-    status,
-    total_amount
-)
-SELECT
-    LEVEL,
+BEGIN
 
-    MOD(LEVEL,1000) + 1,
+    FOR i IN 1..5000 LOOP
 
-    SYSDATE - DBMS_RANDOM.VALUE(1,365),
+        INSERT INTO sales_orders (
+            order_id,
+            customer_id,
+            order_date,
+            status,
+            total_amount
+        )
+        VALUES (
+            sales_orders_seq.NEXTVAL,
 
-    CASE MOD(LEVEL,4)
-        WHEN 0 THEN 'PENDING'
-        WHEN 1 THEN 'SHIPPED'
-        WHEN 2 THEN 'COMPLETED'
-        ELSE 'CANCELLED'
-    END,
+            MOD(i, 1000) + 1,
 
-    ROUND(DBMS_RANDOM.VALUE(100,5000),2)
+            TRUNC(SYSDATE - DBMS_RANDOM.VALUE(0,365)),
 
-FROM dual
-CONNECT BY LEVEL <= 5000;
+            CASE
+                WHEN MOD(i,20)=0 THEN 'CANCELLED'
+                WHEN MOD(i,5)=0 THEN 'SHIPPED'
+                WHEN MOD(i,3)=0 THEN 'DELIVERED'
+                ELSE 'CREATED'
+            END,
 
-COMMIT;
+            0
+        );
+
+    END LOOP;
+
+    COMMIT;
+
+END;
+/

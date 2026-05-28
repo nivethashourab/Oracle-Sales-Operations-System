@@ -2,7 +2,7 @@
 
 INSERT INTO inventory (
     product_id,
-    available_stock,
+    stock_qty,
     last_updated
 )
 SELECT

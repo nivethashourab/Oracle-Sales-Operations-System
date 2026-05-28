@@ -1,27 +1,37 @@
 ---loads order_items table with 20000 rows of data
 
-INSERT INTO order_items (
-    item_id,
-    order_id,
-    product_id,
-    quantity,
-    unit_price
-)
-SELECT
-    seq_num,
+BEGIN
 
-    MOD(seq_num,5000) + 1,
+    FOR i IN 1..20000 LOOP
 
-    MOD(seq_num,100) + 1,
+        INSERT INTO order_items (
+            item_id,
+            order_id,
+            product_id,
+            quantity,
+            unit_price
+        )
+        VALUES (
+            order_items_seq.NEXTVAL,
 
-    ROUND(DBMS_RANDOM.VALUE(1,10)),
+            -- safely map across existing orders
+            100000 + MOD(i,5000) + 1,
 
-    ROUND(DBMS_RANDOM.VALUE(10,500),2)
+            MOD(i,100) + 1,
 
-FROM (
-    SELECT LEVEL AS seq_num
-    FROM dual
-    CONNECT BY LEVEL <= 20000
-);
+            TRUNC(DBMS_RANDOM.VALUE(1,5)),
 
-COMMIT;
+            ROUND(DBMS_RANDOM.VALUE(20,1000),2)
+        );
+
+        -- commit in batches (important)
+        IF MOD(i,1000)=0 THEN
+            COMMIT;
+        END IF;
+
+    END LOOP;
+
+    COMMIT;
+
+END;
+/

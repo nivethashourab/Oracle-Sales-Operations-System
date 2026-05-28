@@ -11,8 +11,8 @@ The project is organized for easy deployment, exploration, and optimization in a
 - Oracle schema and data model for customers, products, orders, inventory, and sales
 - PL/SQL packages, procedures, and triggers for business logic and data consistency
 - Exported DDL under `database/schema_ddl_export/` for tables, views, packages, procedures, triggers, and materialized views
-- Sample data generation scripts under `database/sample_data_generator/`
-- Analytics queries for revenue, customer, product, and inventory insights
+- Sample data generation scripts under `database/sample_data_generator/`, including reconciliation logic for order totals and inventory
+- Analytics queries for revenue, customer, product, and inventory insights, plus materialized view reporting
 - Performance tutorials and examples for indexing, partitioning, and execution plans
 - Setup scripts for database deployment
 
@@ -20,10 +20,10 @@ The project is organized for easy deployment, exploration, and optimization in a
 
 - `analytics/` — Business reporting and analysis SQL queries
 - `database/schema_ddl_export/` — Exported DDL for tables, views, procedures, packages, triggers, and materialized views
-- `database/sample_data_generator/` — SQL scripts for generating realistic sample sales and inventory data
+- `database/sample_data_generator/` — SQL scripts for generating realistic sample sales and inventory data, plus reconciliation updates for order totals and inventory
 - `performance analysis/` — Additional SQL performance exploration scripts
 - `setup/` — Database deployment and schema setup scripts
-- `docs/` — Architecture notes and ER diagrams
+- `docs/` — Architecture notes and process flow documentation
 
 ## Prerequisites
 
@@ -55,7 +55,13 @@ docker exec -it oracle-xe sqlplus system/Oracle123@XEPDB1
 @setup/setup_project.sql
 ```
 
-4. Verify the objects and sample data
+4. If you load sample data first, run reconciliation to refresh order totals and inventory after insert operations
+
+```sql
+@database/sample_data_generator/data_reconciliation.sql
+```
+
+5. Verify the objects and sample data
 
 ```sql
 SELECT owner, object_name, object_type FROM user_objects ORDER BY object_type, object_name;
@@ -67,18 +73,20 @@ SELECT owner, object_name, object_type FROM user_objects ORDER BY object_type, o
 - Transaction processing for customers, orders, and inventory
 - PL/SQL automation with packages and scheduler jobs
 - Data consistency enforced with triggers and constraints
+- Reconciliation scripts for order totals and inventory updates
 - Reporting-ready materialized views
 - Performance tuning using indexes, partitioning, and query analysis
 
 ## Analytics & Reporting
 
-See `analytics/business_analysis.sql` for business-focused queries, including:
+See `analytics/business_analysis.sql` and `analytics/mv_report_analytics.sql` for business-focused queries and materialized view reporting, including:
 
 - Monthly revenue and trend analysis
 - Top customers by spend
 - Best-selling products
 - Inventory stock and turnover analysis
 - Order status distribution
+- Materialized view KPI reports for customer, product, category, and sales summaries
 
 ## Performance Optimization
 
